@@ -8,8 +8,18 @@ const PORT = Number(process.env.PORT)|| 8000
 app.use(express.json())
 //Create GraphQL Server
 const server = new ApolloServer({
-    typeDefs:'',//schemas
-    resolvers:{},//resolvers or actual function
+    typeDefs:`
+    type Query{
+        hello:String,
+        say(name:String):String,
+    }
+    `,//schemas
+    resolvers:{
+        Query :{
+            hello:()=>`Hey There I Am Server`,
+            say:(_,{name}:{name:string})=>`Hey ${name}`
+        }
+    },//resolvers or actual function
   });
 //Start GraphQL Server
 await server.start();

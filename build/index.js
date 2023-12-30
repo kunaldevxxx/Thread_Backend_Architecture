@@ -22,8 +22,18 @@ function init() {
         app.use(express_1.default.json());
         //Create GraphQL Server
         const server = new server_1.ApolloServer({
-            typeDefs: '', //schemas
-            resolvers: {}, //resolvers or actual function
+            typeDefs: `
+    type Query{
+        hello:String,
+        say(name:String):String,
+    }
+    `, //schemas
+            resolvers: {
+                Query: {
+                    hello: () => `Hey There I Am Server`,
+                    say: (_, { name }) => `Hey ${name}`
+                }
+            }, //resolvers or actual function
         });
         //Start GraphQL Server
         yield server.start();
