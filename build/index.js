@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const server_1 = require("@apollo/server");
 const express4_1 = require("@apollo/server/express4");
+const db_1 = require("./lib/db");
 function init() {
     return __awaiter(this, void 0, void 0, function* () {
         const app = (0, express_1.default)();
@@ -23,15 +24,32 @@ function init() {
         //Create GraphQL Server
         const server = new server_1.ApolloServer({
             typeDefs: `
-    type Query{
+    type Query {
         hello:String,
         say(name:String):String,
     }
+    type Mutation {
+        createUser(firstName:String!,lastName:String!,email:String!,password:String!): Boolean
+    } 
     `, //schemas
             resolvers: {
                 Query: {
                     hello: () => `Hey There I Am Server`,
-                    say: (_, { name }) => `Hey ${name}`
+                    say: (_, { name }) => `Hey ${name}`,
+                },
+                Mutation: {
+                    createUser: (_, { firstName, lastName, email, password }) => __awaiter(this, void 0, void 0, function* () {
+                        yield db_1.prismaclient.user.create({
+                            data: {
+                                firstName,
+                                lastName,
+                                email,
+                                password,
+                                salt: "random_salt",
+                            },
+                        });
+                        return true;
+                    })
                 }
             }, //resolvers or actual function
         });
