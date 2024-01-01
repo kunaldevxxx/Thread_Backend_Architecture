@@ -22,6 +22,14 @@ const queries = {
         });
         return token;
     }),
+    getCurrentLoggedInUser: (_, parameters, context) => __awaiter(void 0, void 0, void 0, function* () {
+        if (context && context.user) {
+            const id = context.user.id;
+            const user = yield user_1.default.getUserById(id);
+            return user;
+        }
+        throw new Error("I dont know who are you");
+    }),
 };
 const mutations = {
     createUser: (_, payload) => __awaiter(void 0, void 0, void 0, function* () {

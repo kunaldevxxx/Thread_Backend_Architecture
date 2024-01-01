@@ -53,5 +53,11 @@ class UserService {
             return token;
         });
     }
+    static decodeJWTToken(token) {
+        return jsonwebtoken_1.default.verify(token, jwt_secret);
+    }
+    static getUserById(id) {
+        return db_1.prismaclient.user.findUnique({ where: { id } });
+    }
 }
 exports.default = UserService;

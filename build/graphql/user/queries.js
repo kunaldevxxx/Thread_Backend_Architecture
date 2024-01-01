@@ -4,4 +4,5 @@ exports.queries = void 0;
 exports.queries = `
   #graphql 
   getusertoken(email: String!, password: String!): String
+  getCurrentLoggedInUser: User
 `;
